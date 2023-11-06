@@ -141,8 +141,9 @@ fun Onboarding(navController: NavHostController) {
                                 if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()) {
                                     saveUserInfo(context, firstName, lastName, email)
                                     navController.navigate(Home.route)
+                                    showToastMessage(context, "Registration Successful")
                                 } else {
-                                    showErrorMessage(context, "Please fill out all fields")
+                                    showToastMessage(context, "Please fill out all fields")
                                 }
                             },
                             border = BorderStroke(2.dp, LittleLemonColor.green),
@@ -172,7 +173,7 @@ private fun saveUserInfo(context: Context, firstName: String, lastName: String, 
     }
 }
 
-private fun showErrorMessage(context: Context, message: String) {
+private fun showToastMessage(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
