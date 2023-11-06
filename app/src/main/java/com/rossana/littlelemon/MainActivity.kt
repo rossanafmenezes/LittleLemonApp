@@ -10,7 +10,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            Navigation(navController)
+            Navigation(navController, context = this)
         }
     }
 }
