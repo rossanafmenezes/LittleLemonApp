@@ -69,7 +69,7 @@ dependencies {
     // Ktor
     implementation("io.ktor:ktor-client-android:2.1.3")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:2.1.3")
-    implementation("io.ktor:ktor-client-serialization-jvm:2.1.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.3")
     // Room
     implementation("androidx.room:room-runtime:2.4.3")
     kapt("androidx.room:room-compiler:2.4.3")
