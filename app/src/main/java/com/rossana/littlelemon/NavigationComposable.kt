@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Onboarding.route) {
         composable(Onboarding.route) {
-            Onboarding()
+            Onboarding(navController)
         }
         composable(Home.route) {
             Home()

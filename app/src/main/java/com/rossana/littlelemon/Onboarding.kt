@@ -1,5 +1,7 @@
 package com.rossana.littlelemon
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,11 +34,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.rossana.littlelemon.ui.theme.LittleLemonColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Onboarding() {
+fun Onboarding(navController: NavHostController) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -52,7 +55,7 @@ fun Onboarding() {
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item{
+        item {
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = "Logo",
@@ -62,7 +65,7 @@ fun Onboarding() {
                     .height(50.dp)
             )
         }
-        item{
+        item {
             Row(
                 modifier = Modifier
                     .background(color = LittleLemonColor.green)
@@ -78,7 +81,7 @@ fun Onboarding() {
                 )
             }
         }
-        item{
+        item {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -90,7 +93,7 @@ fun Onboarding() {
                 )
             }
         }
-        item{
+        item {
             Column(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = firstName,
@@ -134,29 +137,48 @@ fun Onboarding() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         OutlinedButton(
-                            onClick = {},
+                            onClick = {
+                                if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()) {
+                                    saveUserInfo(context, firstName, lastName, email)
+                                    navController.navigate(Home.route)
+                                } else {
+                                    showErrorMessage(context, "Please fill out all fields")
+                                }
+                            },
                             border = BorderStroke(2.dp, LittleLemonColor.green),
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = LittleLemonColor.yellow,
                                 contentColor = LittleLemonColor.green
                             ),
-
-
-                            ) {
+                        ) {
                             Text(text = "Register", style = TextStyle(fontWeight = FontWeight.Bold))
                         }
                     }
                 }
             }
         }
-
     }
 }
 
+private fun saveUserInfo(context: Context, firstName: String, lastName: String, email: String) {
+    val sharedPref = context.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+    with(sharedPref.edit()) {
+        putString("first_name", firstName)
+        putString("last_name", lastName)
+        putString("email", email)
+        putBoolean("onboarding_complete", true)
+        apply()
+    }
+}
+
+private fun showErrorMessage(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
 
 @Preview(showBackground = true)
 @Composable
 fun OnboardingPreview() {
-    Onboarding()
+    val navController = rememberNavController()
+    Onboarding(navController = navController)
 }
