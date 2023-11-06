@@ -117,6 +117,7 @@ fun Profile(navController: NavHostController) {
                             onClick = {
                                 navController.navigate(Onboarding.route)
                                 sharedPref.edit().clear().apply()
+                                sharedPref.edit().putBoolean("onboarding_complete", false).apply()
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
