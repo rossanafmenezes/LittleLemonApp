@@ -15,12 +15,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,8 +36,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rossana.littlelemon.ui.theme.LittleLemonColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(navController: NavHostController) {
+
+    var searchPhrase by remember { mutableStateOf("") }
 
     LazyColumn(
         modifier = Modifier
@@ -44,6 +54,7 @@ fun Home(navController: NavHostController) {
         item {
             Spacer(modifier = Modifier.size(16.dp))
         }
+        // Hero Section
         item {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(
@@ -84,7 +95,32 @@ fun Home(navController: NavHostController) {
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                     }
-
+                }
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = LittleLemonColor.green)
+                        .padding(8.dp), horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = searchPhrase,
+                        onValueChange = { searchPhrase = it },
+                        label = { Text(text = "Search") },
+                        leadingIcon = {
+                            Image(
+                                painter = painterResource(id = R.drawable.icon_search),
+                                contentDescription = "search",
+                                modifier = Modifier.padding(10.dp)
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(start = 50.dp, end = 50.dp, bottom = 16.dp)
+                            .fillMaxWidth(),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = LittleLemonColor.cloud,
+                        )
+                    )
                 }
             }
         }
