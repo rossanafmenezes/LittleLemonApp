@@ -20,4 +20,12 @@ data class MenuItemNetwork(
     val description: String,
     @SerialName("image")
     val image: String
-)
+) {
+    fun toMenuItemRoom() = MenuItemRoom(
+        id = id,
+        title = title,
+        price = price,
+        description = description,
+        image = image
+    )
+}
